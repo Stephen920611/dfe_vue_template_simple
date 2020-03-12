@@ -58,7 +58,8 @@ export default {
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
-      const showingChildren = children.filter(item => {
+//        console.log('11111',item)
+        const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
         } else {
@@ -66,16 +67,18 @@ export default {
           this.onlyOneChild = item
           return true
         }
-      })
+      });
+        console.log('showingChildren',showingChildren);
 
-      // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
+        // When there is only one child router, the child router is displayed by default
+      /*if (showingChildren.length === 1) {
         return true
-      }
+      }*/
 
       // Show parent if there are no child router to display
-      if (showingChildren.length === 0) {
+      if (showingChildren.length === 1) {
         this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+//        console.log('onlyOneChild',this.onlyOneChild);
         return true
       }
 

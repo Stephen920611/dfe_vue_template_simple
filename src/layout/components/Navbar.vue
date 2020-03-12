@@ -2,11 +2,11 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb class="breadcrumb-container" />
+    <breadcrumb class="breadcrumb-container" :style="headVisible ? 'padding-left: 15px' : null"/>
 
-    <div class="right-menu">
+    <div class="right-menu" v-if="!headVisible">
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
+        <div class="avatar-wrapper" >
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
@@ -37,6 +37,11 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
+    data() {
+        return {
+            headVisible: this.$store.state.app.headVisible,
+        }
+    },
   components: {
     Breadcrumb,
     Hamburger
@@ -59,7 +64,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped type="text/scss">
 .navbar {
   height: 50px;
   overflow: hidden;

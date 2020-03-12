@@ -5,7 +5,10 @@ const state = {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: 'desktop',
+  headVisible:true, //检测是顶部标题true还是侧边栏false
+    sidebarData:null,
+    hasSidebar:false,//是否有sidebar
 }
 
 const mutations = {
@@ -25,7 +28,11 @@ const mutations = {
   },
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
-  }
+  },
+    UPDATE_SIDEBAR:(state,{sidebarData,hasSidebar})=>{
+      state.sidebarData = sidebarData;
+        state.hasSidebar = hasSidebar;
+    }
 }
 
 const actions = {
@@ -37,8 +44,11 @@ const actions = {
   },
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
+  },
+    updateSidebar({commit},{type,sidebarData,hasSidebar}){
+        commit('UPDATE_SIDEBAR',{sidebarData,hasSidebar})
   }
-}
+  }
 
 export default {
   namespaced: true,
