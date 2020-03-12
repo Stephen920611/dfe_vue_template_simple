@@ -70,24 +70,22 @@
         },
 
         methods: {
-            updateSidebar(data,status){
+            updateSidebar(data,status,parents){
                 const {dispatch} = this.$store;
                 dispatch({
                     type: 'app/updateSidebar',//调用action
-                    sidebarData: data,
-                    hasSidebar:status,
+                    sidebarData: data,//侧边栏的数据
+                    hasSidebar:status,//是否显示侧边栏
+                    sidebarParents:parents,//点击的顶部标题的数据
                 })
 
             },
             menuChange(onlyOneChild){
-                this.updateSidebar(null,false);
-//                console.log('onlyOneChild',onlyOneChild)
+                this.updateSidebar(null,false,null);
 
             },
             menuHasChild(item){
-//                console.log('item',item.children)
-                this.updateSidebar(item.children,true)
-//                this.updateSidebar([item])
+                this.updateSidebar(item.children,true,item)
             },
             hasOneShowingChild(children = [], parent) {
                 const showingChildren = children.filter(item => {

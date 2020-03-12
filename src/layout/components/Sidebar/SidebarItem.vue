@@ -31,6 +31,7 @@ import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
 
+
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
@@ -58,7 +59,6 @@ export default {
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
-//        console.log('11111',item)
         const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
@@ -68,30 +68,29 @@ export default {
           return true
         }
       });
-//        console.log('showingChildren',showingChildren);
-
         // When there is only one child router, the child router is displayed by default
-      /*if (showingChildren.length === 1) {
+      if (showingChildren.length === 1) {
         return true
-      }*/
+      }
 
       // Show parent if there are no child router to display
-      if (showingChildren.length === 1) {
+      if (showingChildren.length === 0) {
         this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
-//        console.log('onlyOneChild',this.onlyOneChild);
         return true
       }
 
       return false
     },
     resolvePath(routePath) {
-      if (isExternal(routePath)) {
+        if (isExternal(routePath)) {
         return routePath
       }
       if (isExternal(this.basePath)) {
-        return this.basePath
+          return this.basePath
       }
-      return path.resolve(this.basePath, routePath)
+//      多添加顶部标题的根节点路由，要不然404
+        return path.resolve(this.$store.getters.sidebarParents,this.basePath, routePath)
+//        return path.resolve(this.basePath, routePath)
     }
   }
 }

@@ -7,6 +7,7 @@ const getters = {
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
     sidebarData: state => state.app.sidebarData,
-    hasSidebar: state => state.app.hasSidebar
+    hasSidebar: state => state.app.hasSidebar,
+    sidebarParents: state => state.app.sidebarParents
 }
 export default getters

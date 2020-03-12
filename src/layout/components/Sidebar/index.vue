@@ -30,7 +30,8 @@ export default {
     ...mapGetters([
       'permission_routes',
       'sidebar',
-        'sidebarData'
+        'sidebarData',
+        'sidebarParents'
     ]),
     activeMenu() {
       const route = this.$route

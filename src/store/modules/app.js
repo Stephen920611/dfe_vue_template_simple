@@ -7,8 +7,9 @@ const state = {
   },
   device: 'desktop',
   headVisible:true, //检测是顶部标题true还是侧边栏false
-    sidebarData:null,
-    hasSidebar:false,//是否有sidebar
+    sidebarData:null, //侧边栏的数据
+    hasSidebar:false,//是否有sidebar，根据顶部导航是否有子元素来判断
+    sidebarParents:null,//点击的顶部标题的数据
 }
 
 const mutations = {
@@ -29,9 +30,10 @@ const mutations = {
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
   },
-    UPDATE_SIDEBAR:(state,{sidebarData,hasSidebar})=>{
+    UPDATE_SIDEBAR:(state,{sidebarData,hasSidebar,sidebarParents})=>{
       state.sidebarData = sidebarData;
         state.hasSidebar = hasSidebar;
+        state.sidebarParents = sidebarParents ? sidebarParents.path:''
     }
 }
 
@@ -45,8 +47,8 @@ const actions = {
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
   },
-    updateSidebar({commit},{type,sidebarData,hasSidebar}){
-        commit('UPDATE_SIDEBAR',{sidebarData,hasSidebar})
+    updateSidebar({commit},{type,sidebarData,hasSidebar,sidebarParents}){
+        commit('UPDATE_SIDEBAR',{sidebarData,hasSidebar,sidebarParents})
   }
   }
 
