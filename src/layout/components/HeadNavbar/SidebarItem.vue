@@ -1,34 +1,37 @@
 <template>
     <div v-if="!item.hidden" style="display:inline-block;">
-        <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+        <template
+                v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
             <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-                <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" @click="menuChange(onlyOneChild)">
+                <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}"
+                              @click="menuChange(onlyOneChild)">
                     <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title"/>
                 </el-menu-item>
             </app-link>
         </template>
-        <template  v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body >
-            <!--<app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">-->
-            <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" @click="menuHasChild(item)">
-                <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
-            </el-menu-item>
-            <!--</app-link>-->
+        <template v-else ref="subMenu" popper-append-to-body>
+            <app-link v-if="item.meta" :to="resolvePath(item.path)">
+                <el-menu-item :index="resolvePath(onlyOneChild.path)"
+                              @click="menuHasChild(item)" >
+                    <item :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
+                </el-menu-item>
+            </app-link>
         </template>
 
-       <!-- <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
-            <template slot="title">
-                <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
-           &lt;!&ndash;增加固定宽度解决箭头被遮挡的问题&ndash;&gt;
-                &lt;!&ndash;<div style="display:inline-block;width: 18px "></div>&ndash;&gt;
-            </template>
-           &lt;!&ndash; <vertical-item
-                    v-for="child in item.children"
-                    :key="child.path"
-                    :is-nest="true"
-                    :item="child"
-                    :base-path="resolvePath(child.path)"
-            />&ndash;&gt;
-        </el-submenu>-->
+        <!-- <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+             <template slot="title">
+                 <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
+            &lt;!&ndash;增加固定宽度解决箭头被遮挡的问题&ndash;&gt;
+                 &lt;!&ndash;<div style="display:inline-block;width: 18px "></div>&ndash;&gt;
+             </template>
+            &lt;!&ndash; <vertical-item
+                     v-for="child in item.children"
+                     :key="child.path"
+                     :is-nest="true"
+                     :item="child"
+                     :base-path="resolvePath(child.path)"
+             />&ndash;&gt;
+         </el-submenu>-->
     </div>
 </template>
 
@@ -42,7 +45,7 @@
 
     export default {
         name: 'SidebarItem',
-        components: {Item, AppLink,VerticalItem},
+        components: {Item, AppLink, VerticalItem},
         mixins: [FixiOSBug],
         props: {
             // route object
@@ -65,27 +68,27 @@
             this.onlyOneChild = null
             return {}
         },
-        mounted:function () {
+        mounted: function () {
 //            console.log(this.props,'13232323')
         },
 
         methods: {
-            updateSidebar(data,status,parents){
+            updateSidebar(data, status, parents) {
                 const {dispatch} = this.$store;
                 dispatch({
                     type: 'app/updateSidebar',//调用action
                     sidebarData: data,//侧边栏的数据
-                    hasSidebar:status,//是否显示侧边栏
-                    sidebarParents:parents,//点击的顶部标题的数据
+                    hasSidebar: status,//是否显示侧边栏
+                    sidebarParents: parents,//点击的顶部标题的数据
                 })
 
             },
-            menuChange(onlyOneChild){
-                this.updateSidebar(null,false,null);
+            menuChange(onlyOneChild) {
+                this.updateSidebar(null, false, null);
 
             },
-            menuHasChild(item){
-                this.updateSidebar(item.children,true,item)
+            menuHasChild(item) {
+                this.updateSidebar(item.children, true, item)
             },
             hasOneShowingChild(children = [], parent) {
                 const showingChildren = children.filter(item => {
