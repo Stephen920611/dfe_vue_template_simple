@@ -9,29 +9,38 @@
                 </el-menu-item>
             </app-link>
         </template>
-        <template v-else ref="subMenu" popper-append-to-body>
+        <!--<template v-else ref="subMenu" popper-append-to-body>
             <app-link v-if="item.meta" :to="resolvePath(item.path)">
-                <el-menu-item :index="resolvePath(onlyOneChild.path)"
+                <el-menu-item :index="resolvePath(item.path)"
                               @click="menuHasChild(item)" >
                     <item :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
                 </el-menu-item>
             </app-link>
-        </template>
+        </template>-->
 
-        <!-- <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
-             <template slot="title">
+         <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body  @click.native="menuHasChild(item)" >
+             <template slot="title"  >
                  <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
-            &lt;!&ndash;增加固定宽度解决箭头被遮挡的问题&ndash;&gt;
-                 &lt;!&ndash;<div style="display:inline-block;width: 18px "></div>&ndash;&gt;
+            <!--增加固定宽度解决箭头被遮挡的问题-->
+                 <!--<div style="display:inline-block;width: 18px "></div>-->
              </template>
-            &lt;!&ndash; <vertical-item
+             <!--<vertical-item
                      v-for="child in item.children"
                      :key="child.path"
                      :is-nest="true"
                      :item="child"
                      :base-path="resolvePath(child.path)"
-             />&ndash;&gt;
-         </el-submenu>-->
+             />-->
+             <sidebar-item
+                     v-show="false"
+                     v-for="child in item.children"
+                     :key="child.path"
+                     :is-nest="true"
+                     :item="child"
+                     :base-path="resolvePath(child.path)"
+                     class="nest-menu"
+             />
+         </el-submenu>
     </div>
 </template>
 

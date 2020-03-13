@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger v-if="hasSidebar" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger v-show="hasSidebar" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" :style="headVisible ? 'padding-left: 15px' : null"/>
 
