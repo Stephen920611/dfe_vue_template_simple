@@ -97,7 +97,12 @@
 
             },
             menuHasChild(item) {
-                this.updateSidebar(item.children, true, item)
+                //更改侧边栏
+                this.updateSidebar(item.children, true, item);
+                //跳转重定向路由
+                this.$router.push({
+                    path: item.path,
+                })
             },
             hasOneShowingChild(children = [], parent) {
                 const showingChildren = children.filter(item => {

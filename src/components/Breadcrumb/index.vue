@@ -12,12 +12,20 @@
 
 <script>
     import pathToRegexp from 'path-to-regexp'
+    import { mapGetters } from 'vuex'
 
     export default {
         data() {
             return {
                 levelList: null
             }
+        },
+        computed: {
+            ...mapGetters([
+                'permission_routes',
+                'sidebar',
+                'avatar'
+            ]),
         },
         watch: {
             $route() {
@@ -30,6 +38,7 @@
         methods: {
             //获取面包屑
             getBreadcrumb() {
+                const {dispatch} = this.$store;
                 // only show routes with meta.title
                 //只显示路由的meta.title
                 let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
@@ -41,7 +50,21 @@
                     matched = [{path: '/dashboard', meta: {title: '首页'}}].concat(matched)
                 }
 
-                this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+                this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false);
+                //根据路由显示侧边栏
+                this.permission_routes.map((val,idx)=>{
+                   if(val.hasOwnProperty('name') &&this.levelList.length >1 && val.name === this.levelList[1].name){
+                       dispatch({
+                           type: 'app/updateSidebar',//调用action
+                           sidebarData: val.children,//侧边栏的数据
+                           hasSidebar: true,//是否显示侧边栏
+                           sidebarParents: val,//点击的顶部标题的数据
+                       })
+
+                   }
+
+               });
+
 
             },
             //是否是首页
