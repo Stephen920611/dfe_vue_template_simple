@@ -1,9 +1,14 @@
 import store from '@/store'
+import {mapGetters} from 'vuex'
 
 const { body } = document
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
+    computed: {
+        ...mapGetters([
+            'resizeHandlerVisible'
+        ]),},
   watch: {
     $route(route) {
       if (this.device === 'mobile' && this.sidebar.opened) {
@@ -32,7 +37,8 @@ export default {
       return rect.width - 1 < WIDTH
     },
     $_resizeHandler() {
-      if (!document.hidden) {
+        store.dispatch('app/toggleResizeBtn', {resizeHandlerVisible:!this.resizeHandlerVisible})
+        if (!document.hidden) {
         const isMobile = this.$_isMobile()
         store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
 

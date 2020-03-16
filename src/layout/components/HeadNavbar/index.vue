@@ -9,14 +9,16 @@
                     active-text-color="#ffd04b"
                     mode="horizontal"
                     class="el-menu-demo"
+                    ref="subMenuList"
             >
                 <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route"
                               :base-path="route.path"/>
             </el-menu>
         </div>
-        <!--<el-scrollbar wrap-class="scrollbar-wrapper">
 
-        </el-scrollbar>-->
+        <!--<div  v-show="menuVisibleBtn" class="header-menu-visible" @click ="toggleMenu()">
+            <i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>
+        </div>-->
         <div  class="header-menu-visible" @click ="toggleMenu()">
             <i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>
         </div>
@@ -67,6 +69,8 @@
                 'sidebar',
                 'avatar',
                 'toggleMenuVisible',
+                'menuVisibleBtn',
+                'resizeHandlerVisible'
             ]),
             activeMenu() {
                 const route = this.$route
@@ -85,17 +89,41 @@
             variables() {
                 return variables
             },
-            /*isCollapse() {
-                return !this.sidebar.opened
-            }*/
+        },
+        watch: {
+            resizeHandlerVisible:{
+                handler(val, oldVal) {
+                    this.resizeUpOrDownBtn();
+                },
+            }
+        },
+        mounted:function () {
+            const { dispatch } = this.$store;
+            this.resizeUpOrDownBtn();
         },
         methods: {
+            //是否显示多余菜单
             toggleMenu(){
                 const { dispatch } = this.$store;
                 dispatch({
                     type:'app/toggleMenu',
                     toggleMenuVisible:!this.toggleMenuVisible
                 })
+            },
+            //监听多余按钮的显示
+            resizeUpOrDownBtn(){
+                const { dispatch } = this.$store;
+                if (this.$refs.subMenuList.$el.offsetHeight > 60) {
+                    dispatch({
+                        type:'app/toggleMenuBtn',
+                        menuVisibleBtn:true
+                    })
+                }else{
+                    dispatch({
+                        type:'app/toggleMenuBtn',
+                        menuVisibleBtn:false
+                    })
+                }
             },
             toggleSideBar() {
                 this.$store.dispatch('app/toggleSideBar')
@@ -178,8 +206,12 @@
 
         }
         .header-menu{
-            width: 100%;
+            /*width: 100%;*/
+            flex:1;
             height: 60px;
+            .el-menu.el-menu--horizontal{
+                border: none;
+            }
         }
         .el-scrollbar {
             width: 100%;
