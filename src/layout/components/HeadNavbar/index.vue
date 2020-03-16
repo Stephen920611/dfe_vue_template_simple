@@ -1,7 +1,7 @@
 <template>
     <div :class="{'has-logo':showLogo}" class="head-nav-bar">
         <logo v-if="showLogo"/>
-        <div class="header-menu">
+        <div class="header-menu" :style="toggleMenuVisible ? null : 'overflow:hidden'">
             <el-menu
                     :default-active="activeMenu"
                     background-color="#304156"
@@ -17,6 +17,9 @@
         <!--<el-scrollbar wrap-class="scrollbar-wrapper">
 
         </el-scrollbar>-->
+        <div  class="header-menu-visible" @click ="toggleMenu()">
+            <i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>
+        </div>
         <div class="right-menu">
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper" >
@@ -62,7 +65,8 @@
             ...mapGetters([
                 'permission_routes',
                 'sidebar',
-                'avatar'
+                'avatar',
+                'toggleMenuVisible',
             ]),
             activeMenu() {
                 const route = this.$route
@@ -86,6 +90,13 @@
             }*/
         },
         methods: {
+            toggleMenu(){
+                const { dispatch } = this.$store;
+                dispatch({
+                    type:'app/toggleMenu',
+                    toggleMenuVisible:!this.toggleMenuVisible
+                })
+            },
             toggleSideBar() {
                 this.$store.dispatch('app/toggleSideBar')
             },
@@ -113,6 +124,18 @@
             transition: margin-left .28s;
             margin-left: $sideBarWidth;
             position: relative;
+        }
+        .header-menu-visible{
+            height: 60px;
+            width: 40px;
+            line-height: 60px;
+            padding-top: 4px;
+            text-align: center;
+            background-color:#304156;
+            color: #fff;
+            & > i{
+                font-size: 20px;
+            }
         }
         .head-nav-bar {
             position: fixed;
@@ -384,7 +407,8 @@
     .right-menu {
         float: right;
         /*height: 100%;*/
-        line-height: 60px;
+        padding-left: 20px;
+        /*line-height: 60px;*/
         height: 60px;
         background-color: #304156;
         color: #fff;

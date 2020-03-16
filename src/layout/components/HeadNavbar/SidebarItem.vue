@@ -82,6 +82,14 @@
         },
 
         methods: {
+            toggleMenuItem(){
+                const { dispatch } = this.$store;
+//                this.menuVisible = ! this.menuVisible;
+                dispatch({
+                    type:'app/toggleMenu',
+                    toggleMenuVisible:false
+                })
+            },
             updateSidebar(data, status, parents) {
                 const {dispatch} = this.$store;
                 dispatch({
@@ -93,10 +101,14 @@
 
             },
             menuChange(onlyOneChild) {
+                //收起顶部标题
+                this.toggleMenuItem();
                 this.updateSidebar(null, false, null);
 
             },
             menuHasChild(item) {
+                //收起顶部标题
+                this.toggleMenuItem();
                 //更改侧边栏
                 this.updateSidebar(item.children, true, item);
                 //跳转重定向路由

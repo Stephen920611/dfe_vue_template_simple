@@ -10,6 +10,7 @@ const state = {
     sidebarData:null, //侧边栏的数据
     hasSidebar:false,//是否有sidebar，根据顶部导航是否有子元素来判断
     sidebarParents:null,//点击的顶部标题的数据
+    toggleMenuVisible:false,//默认显示单行菜单
 }
 
 const mutations = {
@@ -34,7 +35,10 @@ const mutations = {
       state.sidebarData = sidebarData;
         state.hasSidebar = hasSidebar;
         state.sidebarParents = sidebarParents ? sidebarParents.path:''
-    }
+    },
+    TOGGLE_MENU: (state, toggleMenuVisible) => {
+        state.toggleMenuVisible = toggleMenuVisible
+    },
 }
 
 const actions = {
@@ -49,8 +53,12 @@ const actions = {
   },
     updateSidebar({commit},{type,sidebarData,hasSidebar,sidebarParents}){
         commit('UPDATE_SIDEBAR',{sidebarData,hasSidebar,sidebarParents})
-  }
-  }
+  },
+    //判断顶部导航显示一行还是多行
+    toggleMenu({ commit }, { _, toggleMenuVisible}) {
+        commit('TOGGLE_MENU', toggleMenuVisible)
+    }
+}
 
 export default {
   namespaced: true,
