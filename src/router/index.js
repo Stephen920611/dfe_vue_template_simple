@@ -94,7 +94,21 @@ export const constantRoutes = [
                 meta: {title: 'Form表单', icon: 'form'}
             }
         ]
-    }
+    },
+    {
+        path: '/profile',
+        component: Layout,
+        redirect: '/profile/index',
+        hidden: true,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/profile/index'),
+                name: 'Profile',
+                meta: { title: '个人中心', icon: 'user', noCache: true }
+            }
+        ]
+    },
 ]
 
 /**
