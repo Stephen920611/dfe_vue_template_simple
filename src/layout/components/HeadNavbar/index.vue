@@ -16,12 +16,13 @@
             </el-menu>
         </div>
 
-        <!--<div  v-show="menuVisibleBtn" class="header-menu-visible" @click ="toggleMenu()">
-            <i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>
-        </div>-->
-        <div  class="header-menu-visible" @click ="toggleMenu()">
+        <div  v-show="menuVisibleBtn" class="header-menu-visible" @click ="toggleMenu()">
             <i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>
         </div>
+        <!--最初版本-->
+        <!--<div  class="header-menu-visible" @click ="toggleMenu()">-->
+            <!--<i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>-->
+        <!--</div>-->
         <div class="right-menu">
             <el-dropdown class="avatar-container" trigger="click">
                 <div class="avatar-wrapper" >
@@ -175,7 +176,6 @@
             display: flex;
             flex: 1;
             .sidebar-logo-container {
-                width: 265px;
                 height: 60px;
                 line-height: 60px;
                 background-color: #304156;
