@@ -29,6 +29,7 @@ export default {
     }
   },
   methods: {
+      //更改项目的字体大小
     handleSetSize(size) {
       this.$ELEMENT.size = size
       this.$store.dispatch('app/setSize', size)
@@ -38,13 +39,16 @@ export default {
         type: 'success'
       })
     },
+    //刷新界面
     refreshView() {
       // In order to make the cached page re-rendered
+        console.log('view11',this.$route);
       this.$store.dispatch('tagsView/delAllCachedViews', this.$route)
 
-      const { fullPath } = this.$route
+      const { fullPath } = this.$route;
+        console.log('view22','/redirect' + fullPath);
 
-      this.$nextTick(() => {
+        this.$nextTick(() => {
         this.$router.replace({
           path: '/redirect' + fullPath
         })

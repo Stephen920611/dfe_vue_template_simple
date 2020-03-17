@@ -6,6 +6,7 @@ const state = {
     withoutAnimation: false
   },
   device: 'desktop',
+    size: Cookies.get('size') || 'medium',//字体大小
   headVisible:true, //检测是顶部标题true还是侧边栏false
     sidebarData:null, //侧边栏的数据
     hasSidebar:false,//是否有sidebar，根据顶部导航是否有子元素来判断
@@ -33,6 +34,10 @@ const mutations = {
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
   },
+    SET_SIZE: (state, size) => {
+        state.size = size
+        Cookies.set('size', size)
+    },
     UPDATE_SIDEBAR:(state,{sidebarData,hasSidebar,sidebarParents})=>{
       state.sidebarData = sidebarData;
         state.hasSidebar = hasSidebar;
@@ -59,6 +64,10 @@ const actions = {
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
   },
+    //设置字体大小
+    setSize({ commit }, size) {
+        commit('SET_SIZE', size)
+    },
     updateSidebar({commit},{type,sidebarData,hasSidebar,sidebarParents}){
         commit('UPDATE_SIDEBAR',{sidebarData,hasSidebar,sidebarParents})
   },
