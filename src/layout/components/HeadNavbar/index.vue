@@ -24,7 +24,18 @@
             <!--<i :class="toggleMenuVisible ? 'el-icon-arrow-up':'el-icon-arrow-down'"  ></i>-->
         <!--</div>-->
         <div class="right-menu">
-            <el-dropdown class="avatar-container" trigger="click">
+            <template v-if="device!=='mobile'">
+                <search id="header-search" class="right-menu-item"/>
+
+                <!--<error-log id="error-log" class="errLog-container right-menu-item hover-effect" />-->
+
+                <screenfull id="screenfull" class="right-menu-item hover-effect"/>
+
+                <el-tooltip content="Global Size" effect="dark" placement="bottom">
+                    <size-select id="size-select" class="right-menu-item hover-effect"/>
+                </el-tooltip>
+            </template>
+            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper" >
                     <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
                     <i class="el-icon-caret-bottom" />
@@ -61,8 +72,24 @@
     import SidebarItem from './SidebarItem'
     import variables from '@/styles/variables.scss'
 
+    import Breadcrumb from '@/components/Breadcrumb'
+    import Hamburger from '@/components/Hamburger'
+    import ErrorLog from '@/components/ErrorLog'
+    import Screenfull from '@/components/Screenfull'
+    import SizeSelect from '@/components/SizeSelect'
+    import Search from '@/components/HeaderSearch'
+
     export default {
-        components: {SidebarItem, Logo},
+        components: {
+            SidebarItem,
+            Logo,
+            Hamburger,
+            ErrorLog,
+            Screenfull,
+            SizeSelect,
+            Breadcrumb,
+            Search
+        },
         data() {
             return {
                 list: null,
@@ -73,6 +100,7 @@
             ...mapGetters([
                 'permission_routes',
                 'sidebar',
+                'device',
                 'avatar',
                 'toggleMenuVisible',
                 'menuVisibleBtn',
@@ -445,10 +473,10 @@
     }
 
     .right-menu {
+        padding-left: 20px;
         float: right;
         /*height: 100%;*/
-        padding-left: 20px;
-        /*line-height: 60px;*/
+        line-height: 60px;
         height: 60px;
         background-color: #304156;
         color: #fff;
@@ -475,6 +503,9 @@
                 }
             }
         }
+        & > > > .svg-icon {
+            margin-right: 0 !important;
+        }
 
         .avatar-container {
             margin-right: 30px;
@@ -500,6 +531,7 @@
             }
         }
     }
+
 
     // when menu collapsed
     .el-menu--vertical {

@@ -37,7 +37,7 @@ export default {
       return rect.width - 1 < WIDTH
     },
     $_resizeHandler() {
-        store.dispatch('app/toggleResizeBtn', {resizeHandlerVisible:!this.resizeHandlerVisible})
+        store.dispatch('app/toggleResizeBtn', {resizeHandlerVisible:!this.resizeHandlerVisible});
         if (!document.hidden) {
         const isMobile = this.$_isMobile()
         store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
