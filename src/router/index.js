@@ -146,7 +146,8 @@ export const asyncRoutes = [
                 meta: {
                     title: '页面权限',
                     icon: 'lock',
-                    roles: ['admin'] // or you can only set roles in sub nav
+                    // roles: ['admin'] // or you can only set roles in sub nav
+                    roles: ['admin', 'editor'] // you can set roles in root nav
                 }
             },
             {
@@ -156,6 +157,7 @@ export const asyncRoutes = [
                 meta: {
                     title: '指令权限',
                     icon: 'lock',
+                    roles: ['admin', 'editor'] // you can set roles in root nav
                     // if do not set roles, means: this page does not require permission
                 }
             },
@@ -166,7 +168,8 @@ export const asyncRoutes = [
                 meta: {
                     title: '角色权限',
                     icon: 'lock',
-                    roles: ['admin']
+                    roles: ['admin', 'editor'] // you can set roles in root nav
+                    // roles: ['admin']
                 }
             }
         ]
