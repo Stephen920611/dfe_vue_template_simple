@@ -1,7 +1,8 @@
 <template>
   <el-card style="margin-bottom:20px;">
     <div slot="header" class="clearfix">
-      <span>About me</span>
+      <!--<span>About me</span>-->
+      <span>个人中心</span>
     </div>
 
     <div class="user-profile">
@@ -77,6 +78,7 @@ export default {
 .box-center {
   margin: 0 auto;
   display: table;
+    text-align: center;
 }
 
 .text-muted {
