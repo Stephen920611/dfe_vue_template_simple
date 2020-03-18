@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="handleAddRole">
-      {{ permission.addRole }}
+      新增角色
     </el-button>
 
     <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
@@ -23,10 +23,10 @@
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ permission.editPermission }}
+            编辑权限
           </el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope)">
-            {{ permission.delete}}
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -59,10 +59,10 @@
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">
-          {{ permission.cancel }}
+                取消
         </el-button>
         <el-button type="primary" @click="confirmRole">
-          {{ permission.confirm }}
+            确定
         </el-button>
       </div>
     </el-dialog>
@@ -71,8 +71,11 @@
 
 <script>
 import path from 'path'
-import { deepClone } from '@/utils'
+import { deepClone } from '../../utils/index.js'
 import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+import { asyncRoutes, constantRoutes } from '../../router/index.js'
+
+const oldRoutes = deepClone([...constantRoutes, ...asyncRoutes])
 
 const defaultRole = {
   key: '',
@@ -107,6 +110,44 @@ export default {
     this.getRoles()
   },
   methods: {
+      async getRoutes() {
+          const routes = this.generateRoutes(oldRoutes);
+          this.routes = routes;
+      },
+      async getRoles() {
+          this.rolesList = [
+              {
+                  key: 'admin',
+                  name: 'admin',
+                  description: 'Super Administrator. Have access to view all pages.',
+                  routes: oldRoutes
+              },
+              {
+                  key: 'editor',
+                  name: 'editor',
+                  description: 'Normal Editor. Can see all pages except permission page',
+                  routes: oldRoutes.filter(i => i.path !== '/permission')// just a mock
+              },
+              {
+                  key: 'visitor',
+                  name: 'visitor',
+                  description: 'Just a visitor. Can only see the home page and the document page',
+                  routes: [{
+                      path: '',
+                      redirect: 'dashboard',
+                      children: [
+                          {
+                              path: 'dashboard',
+                              name: 'Dashboard',
+                              meta: { title: 'dashboard', icon: 'dashboard' }
+                          }
+                      ]
+                  }]
+              }
+          ]
+      },
+
+/*//      原来的方法
     async getRoutes() {
       const res = await getRoutes()
       this.serviceRoutes = res.data
@@ -115,11 +156,10 @@ export default {
     async getRoles() {
       const res = await getRoles()
       this.rolesList = res.data
-    },
+    },*/
     // Reshape the routes structure so that it looks the same as the sidebar
     generateRoutes(routes, basePath = '/') {
       const res = []
-
       for (let route of routes) {
         // skip some route
         if (route.hidden) { continue }
@@ -129,8 +169,7 @@ export default {
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild
         }
-
-        const data = {
+          const data = {
           path: path.resolve(basePath, route.path),
           title: route.meta && route.meta.title
 

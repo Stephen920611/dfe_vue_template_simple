@@ -42,7 +42,6 @@ export default {
     //刷新界面
     refreshView() {
       // In order to make the cached page re-rendered
-        console.log('view11',this.$route);
       this.$store.dispatch('tagsView/delAllCachedViews', this.$route)
 
       const { fullPath } = this.$route;
