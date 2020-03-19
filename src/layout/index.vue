@@ -1,14 +1,14 @@
 <template>
-    <div :class="classObj" class="app-wrapper"  v-scrollBar >
+    <div :class="classObj" class="app-wrapper"  >
         <div v-if="device==='mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
         <head-navbar />
         <div>
             <sidebar  v-if="hasSidebar" class="sidebar-container" :style="headVisible ? 'padding-top: 60px' : null"/>
-            <div class="main-container" :style="!hasSidebar ? 'margin-left:0' : null">
-                <div :class="{'fixed-header':fixedHeader}" :style="headVisible ? 'padding-top: 60px' : null">
-                    <navbar/>
-                </div>
-                <app-main/>
+            <div :class="{'fixed-header':fixedHeader}" :style=" hasSidebar ? 'margin-left:210px' : null">
+                <navbar/>
+            </div>
+            <div class="main-container" :style="!hasSidebar ? 'margin-left:0' : null" v-scrollBar>
+                    <app-main/>
             </div>
 
         </div>
@@ -78,14 +78,6 @@
 <style lang="scss" scoped type="text/scss">
     @import "~@/styles/mixin.scss";
     @import "~@/styles/variables.scss";
-   /* #app{
-        &>>>.main-container {
-             min-height: 100%;
-             transition: margin-left .28s;
-             margin-left: 0;
-             position: relative;
-         }
-    }*/
 
     .app-wrapper {
     @include clearfix;
