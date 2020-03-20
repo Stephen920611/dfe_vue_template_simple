@@ -1,10 +1,14 @@
 //  顶部导航
 #app {
     .main-container {
-        min-height: 100%;
+        //min-height: 100%;
         transition: margin-left .28s;
         margin-left: $sideBarWidth;
         position: relative;
+        margin-top: 110px;
+        height: calc(100vh - 110px);
+        overflow: auto;
+
     }
 
     .sidebar-container {
