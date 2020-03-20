@@ -37,6 +37,7 @@ export default {
       return rect.width - 1 < WIDTH
     },
     $_resizeHandler() {
+        //监听屏幕变化
         store.dispatch('app/toggleResizeBtn', {resizeHandlerVisible:!this.resizeHandlerVisible});
         if (!document.hidden) {
         const isMobile = this.$_isMobile()

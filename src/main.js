@@ -16,6 +16,12 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 import './utils/scrollbar' // 滚动条插件
+import * as filters from './filters' // 全局的过滤器
+
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts // 引入echarts，将其绑定到vue原型上 使用时this.$echarts
+
 
 /**
  * If you don't want to use mock-server
@@ -29,6 +35,11 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
