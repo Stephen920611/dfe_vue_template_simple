@@ -4,7 +4,8 @@
         <head-navbar />
         <div>
             <sidebar  v-if="hasSidebar" class="sidebar-container" :style="headVisible ? 'padding-top: 60px' : null"/>
-            <div :class="{'fixed-header':fixedHeader}" :style=" hasSidebar ? 'margin-left:210px' : null">
+            <!--<div :class="{'fixed-header':fixedHeader}" class="navbar-container" :style=" hasSidebar ? 'margin-left:210px' : null">-->
+            <div :class="{'fixed-header':fixedHeader}" class="navbar-container" :style="!hasSidebar ? 'margin-left:0' : null">
                 <navbar/>
             </div>
             <div class="main-container" :style="!hasSidebar ? 'margin-left:0' : null" v-scrollBar>
