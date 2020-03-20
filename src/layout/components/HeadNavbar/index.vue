@@ -147,17 +147,11 @@
             //监听多余按钮的显示
             resizeUpOrDownBtn(){
                 const { dispatch } = this.$store;
-                if (this.$refs.subMenuList.$el.offsetHeight > 60) {
-                    dispatch({
-                        type:'app/toggleMenuBtn',
-                        menuVisibleBtn:true
-                    })
-                }else{
-                    dispatch({
-                        type:'app/toggleMenuBtn',
-                        menuVisibleBtn:false
-                    })
-                }
+                //如果大于60的高度，说明菜单栏不止一行，需要让箭头显示
+                dispatch({
+                    type:'app/toggleMenuBtn',
+                    menuVisibleBtn: this.$refs.subMenuList.$el.offsetHeight > 60
+                })
             },
             toggleSideBar() {
                 this.$store.dispatch('app/toggleSideBar')
