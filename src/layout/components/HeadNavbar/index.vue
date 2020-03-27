@@ -147,9 +147,10 @@
                     menuVisibleBtn: this.$refs.subMenuList.$el.offsetHeight > 60
                 })
             },
-            toggleSideBar() {
-                this.$store.dispatch('app/toggleSideBar')
-            },
+            /**
+             * 用户登出
+             * @returns {Promise.<void>}
+             */
             async logout() {
                 await this.$store.dispatch('user/logout')
                 this.$router.push(`/login?redirect=${this.$route.fullPath}`)

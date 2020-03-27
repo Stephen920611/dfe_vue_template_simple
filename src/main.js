@@ -27,24 +27,26 @@ Vue.prototype.$echarts = echarts // 引入echarts，将其绑定到vue原型上 
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
  * you can execute: mockXHR()
+ * 如果您不想使用模拟服务器，您想将MockJs用于模拟API，您可以执行：mockXHR（）
  *
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
+ * 目前MockJs将用于生产环境，请在上线前将其删除！ ！ ！
  */
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
 
-// register global utility filters
+// 注册全局过滤器register global utility filters
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
+// Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

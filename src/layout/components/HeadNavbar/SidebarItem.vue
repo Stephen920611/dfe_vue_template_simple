@@ -1,29 +1,23 @@
 <template>
     <div v-if="!item.hidden" style="display:inline-block;">
+        <!--路由没有子元素-->
         <template
                 v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
             <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
                 <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}"
-                              @click="menuChange(onlyOneChild)">
+                              @click="menuChange(onlyOneChild,true)">
                     <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title"/>
                 </el-menu-item>
             </app-link>
         </template>
-        <!--<template v-else ref="subMenu" popper-append-to-body>
-            <app-link v-if="item.meta" :to="resolvePath(item.path)">
-                <el-menu-item :index="resolvePath(item.path)"
-                              @click="menuHasChild(item)" >
-                    <item :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
-                </el-menu-item>
-            </app-link>
-        </template>-->
-
-         <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body  @click.native="menuHasChild(item)" >
+        <!--路由下有子路由-->
+         <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body  @click.native="menuChange(item,false)" >
              <template slot="title"  >
                  <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title"/>
             <!--增加固定宽度解决箭头被遮挡的问题-->
                  <!--<div style="display:inline-block;width: 18px "></div>-->
              </template>
+             <!--子路由垂直显示-->
              <!--<vertical-item
                      v-for="child in item.children"
                      :key="child.path"
@@ -31,6 +25,7 @@
                      :item="child"
                      :base-path="resolvePath(child.path)"
              />-->
+             <!--TODO:顶部标题下子路由渲染，但不显示，为了顶部标题选中状态和绑定侧边栏-->
              <sidebar-item
                      v-show="false"
                      v-for="child in item.children"
@@ -73,15 +68,15 @@
         },
         data() {
             // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-            // TODO: refactor with render function
+            // TODO: 用渲染功能重构
             this.onlyOneChild = null
             return {}
         },
-        mounted: function () {
-//            console.log(this.props,'13232323')
-        },
 
         methods: {
+            /**
+             * 顶部菜单栏箭头变化
+             */
             toggleMenuItem(){
                 const { dispatch } = this.$store;
 //                this.menuVisible = ! this.menuVisible;
@@ -90,6 +85,12 @@
                     toggleMenuVisible:false
                 })
             },
+            /**
+             * 更新侧边栏
+             * @param data {Array} 侧边栏的显示数据
+             * @param status {Boolean} 是否显示侧边栏
+             * @param parents {Object} 选中顶部标题的数据
+             */
             updateSidebar(data, status, parents) {
                 const {dispatch} = this.$store;
                 dispatch({
@@ -100,40 +101,52 @@
                 })
 
             },
-            menuChange(onlyOneChild) {
-                //收起顶部标题
-                this.toggleMenuItem();
-                this.updateSidebar(null, false, null);
+            /**
+             * 选中顶部菜单选项没有子路由，点击事件
+             * @param item {Object} 元素数据
+             * @param onlyOneChild {Boolean} 是否含有子元素
+             */
+            menuChange(item, onlyOneChild) {
+                // 收起顶部标题（箭头变化）
+                this.toggleMenuItem()
+                if(!onlyOneChild){
+                    // 更改侧边栏（子路由的值，是否显示侧边栏，父路由数据）
+                    this.updateSidebar(item.children, true, item);
+                    // 跳转重定向路由
+                    this.$router.push({
+                        path: item.path
+                    })
+                }else{
+                    // 更改侧边栏（子路由的值，是否显示侧边栏，父路由数据）
+                    this.updateSidebar(null, false, null);
+                }
 
             },
-            menuHasChild(item) {
-                //收起顶部标题
-                this.toggleMenuItem();
-                //更改侧边栏
-                this.updateSidebar(item.children, true, item);
-                //跳转重定向路由
-                this.$router.push({
-                    path: item.path,
-                })
-            },
+            /**
+             * 是否只有一个子元素显示
+             * @param children {Array} 子元素
+             * @param parent {Object} 该元素数据
+             * @returns {boolean}
+             */
+
             hasOneShowingChild(children = [], parent) {
                 const showingChildren = children.filter(item => {
                     if (item.hidden) {
                         return false
                     } else {
-                        // Temp set(will be used if only has one showing child)
+                        // Temp set 临时集（如果只有一个显示子级，将使用该集）
                         this.onlyOneChild = item
                         return true
                     }
                 })
 
-                // When there is only one child router, the child router is displayed by default
+                // 当只有一个子路由器时，默认情况下会显示该子路由器
                 if (showingChildren.length === 1) {
 //                    console.log('showingChildren',showingChildren);
                     return true
                 }
 
-                // Show parent if there are no child router to display
+                // 如果没有子路由器要显示，请显示父路由
                 if (showingChildren.length === 0) {
                     this.onlyOneChild = {...parent, path: '', noShowingChildren: true}
 //                    console.log('onlyOneChild',this.onlyOneChild);
@@ -143,13 +156,20 @@
 
                 return false
             },
+            /**
+             * 路由字符串处理
+             * @param routePath {String} 路由
+             * @returns {*}
+             */
             resolvePath(routePath) {
+                //判断路由是否是外链地址 https://...
                 if (isExternal(routePath)) {
                     return routePath
                 }
                 if (isExternal(this.basePath)) {
                     return this.basePath
                 }
+                //拼接路由（父元素路由地址，子元素）
                 return path.resolve(this.basePath, routePath)
             }
         }

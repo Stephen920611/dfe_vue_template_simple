@@ -10,25 +10,25 @@ import Layout from '@/layout'
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * hidden: true                   是否在侧边栏或者顶部导航栏显示；设为true, 该路由会隐藏（默认为false）
+ * alwaysShow: true               如果设置为true，将始终显示根菜单，
+ *                                如果未设置alwaysShow，则当项具有多个子路线时，
+ *                                它将变为嵌套模式，否则不显示根菜单
+ * redirect: noRedirect           如果设置noRedirect，则不会在面包屑中重定向
+ * name:'router-name'             该名称由<keep-alive>使用（必须设置！！！）
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    roles: ['admin','editor']    权限，控制页面角色（您可以设置多个角色）
+    title: 'title'               名称，显示在侧边栏和面包屑中（推荐设置）
+    icon: 'svg-name'             侧栏中或顶部导航栏的图标显示
+    breadcrumb: false            如果设为false,该路由将在breadcrumb面包屑中隐藏（默认是false）
+    activeMenu: '/example/list'  如果设置了路径，则侧边栏将突出高亮显示您设置的路径
   }
  */
 
 /**
  * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
+ * 没有权限要求的基本页面
+ * 所有角色都可以访问
  */
 export const constantRoutes = [
     {
@@ -124,19 +124,19 @@ export const constantRoutes = [
 
 /**
  * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
+ * 需要根据用户角色动态加载的路由
  */
 export const asyncRoutes = [
     {
         path: '/permission',
         component: Layout,
         redirect: '/permission/page',
-        alwaysShow: true, // will always show the root menu
+        alwaysShow: true, // 始终显示根菜单
         name: 'Permission',
         meta: {
             title: '权限测试页',
             icon: 'lock',
-            roles: ['admin', 'editor'] // you can set roles in root nav
+            roles: ['admin', 'editor'] // 可以在根导航中设置角色
         },
         children: [
             {
@@ -146,8 +146,8 @@ export const asyncRoutes = [
                 meta: {
                     title: '页面权限',
                     icon: 'lock',
-                    // roles: ['admin'] // or you can only set roles in sub nav
-                    roles: ['admin', 'editor'] // you can set roles in root nav
+                    // roles: ['admin']
+                    roles: ['admin', 'editor']
                 }
             },
             {
@@ -157,8 +157,8 @@ export const asyncRoutes = [
                 meta: {
                     title: '指令权限',
                     icon: 'lock',
-                    roles: ['admin'] // you can set roles in root nav
-                    // if do not set roles, means: this page does not require permission
+                    roles: ['admin'] // 可以在根导航中设置角色
+                    // 如果未设置角色，则表示：该页面不需要权限
                 }
             },
             {
@@ -168,7 +168,7 @@ export const asyncRoutes = [
                 meta: {
                     title: '角色权限',
                     icon: 'lock',
-                    // roles: ['admin', 'editor'] // you can set roles in root nav
+                    // roles: ['admin', 'editor'] // 或者只能在子导航中设置角色
                     roles: ['admin']
                 }
             }
@@ -247,17 +247,6 @@ export const asyncRoutes = [
             }
         ]
     },
-
-   /* {
-        path: 'external-link',
-        component: Layout,
-        children: [
-            {
-                path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-                meta: {title: 'External Link', icon: 'link'}
-            }
-        ]
-    },*/
 
     // 404 page must be placed at the end !!!
     {path: '*', redirect: '/404', hidden: true}
